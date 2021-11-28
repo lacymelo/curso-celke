@@ -1,4 +1,5 @@
 const Usuario = require('../models/Usuario');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
 
@@ -6,7 +7,7 @@ module.exports = {
     async listUser(req, res){
         const users = await Usuario.findAll({
             order: [['id', 'desc']],
-            attributes: ['id', 'nome', 'email']
+            attributes: ['id', 'nome', 'email', 'senha']
         });
 
         return res.json(users);
@@ -23,39 +24,53 @@ module.exports = {
 
     //cadastro de usuário
     async createUser(req, res){
-        const { nome , email } = req.body;
+        var data = req.body;
 
-        const user = await Usuario.create({
-            nome,
-            email,
+        //criptografia da senha, com nível de força 8
+        data.senha = await bcrypt.hash(data.senha, 8);
+
+        await Usuario.create(data).then(() => {
+            return res.json({message: 'Success'});
+        }).catch(() => {
+            return res.json({message: 'Error'});
         });
-
-        return res.json(user);
     },
 
     //atualização de usuário
     async updateUser(req, res){
         const { id } = req.body;
 
-        const user = await Usuario.update(req.body, { where: {
-            id: id
-            }
+        await Usuario.update(req.body, { where: {id}})
+        .then(() => {
+            return res.json({message: 'Success'});
+        }).catch(() => {
+            return res.json({message: 'Error'});
         });
-
-        return res.json(user);
     },
 
     //deleta usuário
     async deleteUser(req, res){
         const { id } = req.params;
 
-        await Usuario.destroy({ where: {
-            id: id
-            }
-        }).then(() => {
+        await Usuario.destroy({ where: {id}})
+        .then(() => {
             return res.json({message: 'Success'});
         }).catch(() => {
-            return res.json({message: 'error'});
+            return res.json({message: 'Error'});
         });
-    }
+    },
+
+    //redefine senha
+    async redefinePassword(req, res){
+        const { id, senha } = req.body;
+
+        var senhaCrypt = await bcrypt.hash(senha, 8);
+
+        await Usuario.update({senha: senhaCrypt}, {where: {id}})
+        .then(() => {
+            return res.json({message: 'Success'});
+        }).catch(() => {
+            return res.json({message: 'Error'});
+        });
+    }    
 };

@@ -14,5 +14,7 @@ routes.get('/user/:id', UserController.showUser);
 routes.put('/user', UserController.updateUser);
 //apagar
 routes.get('/deleteUser/:id', UserController.deleteUser);
+//redefine senha
+routes.put('/redefinePassword', UserController.redefinePassword);
 
 module.exports = routes;
