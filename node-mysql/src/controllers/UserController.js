@@ -72,5 +72,21 @@ module.exports = {
         }).catch(() => {
             return res.json({message: 'Error'});
         });
-    }    
+    },
+    
+    //login do usuário
+    async login(req, res){
+        
+        const user = await Usuario.findOne({attributes: ['senha'], where: {email: req.body.email}});
+
+        if(user === null){
+            return res.status(400).json({message: 'Email não cadastrado!'});
+        }
+
+        if(!(await bcrypt.compare(req.body.senha, user.senha))){
+            return res.json({message: 'senha inválida'});
+        }
+
+        return res.json({message: 'Login realizado com sucesso!'});
+    }
 };

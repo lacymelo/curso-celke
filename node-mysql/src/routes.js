@@ -4,17 +4,19 @@ const UserController = require('./controllers/UserController');
 const routes = new express.Router();
 
 //####### rotas ######
-//lista
+//lista usuários
 routes.get('/users', UserController.listUser);
-//cadastra
+//cadastra novo usuário
 routes.post('/new', UserController.createUser);
-//edita
+//edita dados de um usuário
 routes.get('/user/:id', UserController.showUser);
-//atualiza
+//atualiza registro de usuário
 routes.put('/user', UserController.updateUser);
-//apagar
+//apaga um usuário da base de dados
 routes.get('/deleteUser/:id', UserController.deleteUser);
 //redefine senha
 routes.put('/redefinePassword', UserController.redefinePassword);
+//login de usuário
+routes.post('/login', UserController.login);
 
 module.exports = routes;
