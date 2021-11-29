@@ -1,10 +1,12 @@
 const express = require('express');
 const UserController = require('./controllers/UserController');
-const { eAdmin } = require('./controllers/AuthController');
+const { eAdmin, eUserToken } = require('./controllers/AuthController');
 
 const routes = new express.Router();
 
 //####### rotas ######
+//validar token
+routes.get('/valToken', eAdmin, eUserToken);
 //lista usuários
 routes.get('/users', UserController.listUser);
 //cadastra novo usuário

@@ -1,10 +1,10 @@
-const { appendFile } = require('fs');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
+const Usuario = require('../models/Usuario');
 require('dotenv').config();
 
 module.exports = {
-    //validação de token JWT
+    //verificação do token
     eAdmin: async function validateToken(req, res, next){
         const authHeader = req.headers.authorization;
         const [bearer, token] = authHeader.split(' ');
@@ -22,4 +22,20 @@ module.exports = {
             return res.status(400).json({message: 'token inválido!'});
         }
     },
+
+    //validação do usuário salvo no token
+    eUserToken: async function validateUserToken(req, res){
+
+        await Usuario.findByPk(req.userId)
+        .then((user) => {
+            return res.json({
+                user
+            });
+        }).catch(() => {
+            return res.json({
+                erro: true,
+                message: 'Erro: Necessário realizar login para acessar a página!'
+            })
+        });
+    }
 }
