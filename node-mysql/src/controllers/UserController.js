@@ -1,7 +1,7 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { promisify } = require('util');
+require('dotenv').config();
 
 module.exports = {
 
@@ -89,7 +89,7 @@ module.exports = {
             return res.json({message: 'senha inválida'});
         }
 
-        var token = jwt.sign({id: user.id}, 'eQoPSGwhSV9', {
+        var token = jwt.sign({id: user.id}, process.env.SECRET, {
             // expiresIn: 600 10min
             expiresIn: '7d'// 7 dias
         });
@@ -100,22 +100,4 @@ module.exports = {
             token: token
         });
     },
-
-    //validação de token
-    async validateToken(req, res, next){
-        const authHeader = req.headers.authorization;
-        const [bearer, token] = authHeader.split(' ');
-
-        if(!token){
-            return res.status(400).json({message: 'Necessário enviar token!'});
-        }
-
-        try{
-            const decoded = await promisify(jwt.verify)(token, 'eQoPSGwhSV9');
-            req.userId = decoded.id;
-            return next();
-        }catch{
-            return res.status(400).json({message: 'token inválido!'});
-        }
-    }
 };

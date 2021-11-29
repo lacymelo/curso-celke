@@ -1,5 +1,6 @@
 const express = require('express');
 const UserController = require('./controllers/UserController');
+const { eAdmin } = require('./controllers/JWTController');
 
 const routes = new express.Router();
 
@@ -9,9 +10,9 @@ routes.get('/users', UserController.listUser);
 //cadastra novo usuário
 routes.post('/new', UserController.createUser);
 //mostra usuário específico
-routes.get('/user/:id', UserController.validateToken, UserController.showUser);
+routes.get('/user/:id', eAdmin, UserController.showUser);
 //atualiza registro de usuário
-routes.put('/user', UserController.validateToken, UserController.updateUser);
+routes.put('/user', eAdmin, UserController.updateUser);
 //apaga um usuário da base de dados
 routes.get('/deleteUser/:id', UserController.deleteUser);
 //redefine senha

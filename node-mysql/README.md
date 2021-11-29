@@ -28,4 +28,7 @@ instalar o módulo para criptografar a senha
 Instalar a dependencia para JWT
 ### yarn add jsonwebtoken
 
+Gerenciar variáveis de ambiente
+### yarn add dotenv
+
 
