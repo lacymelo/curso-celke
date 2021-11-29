@@ -25,3 +25,7 @@ trabalha com multi form data
 instalar o módulo para criptografar a senha
 ### yarn add bcryptjs
 
+Instalar a dependencia para JWT
+### yarn add jsonwebtoken
+
+

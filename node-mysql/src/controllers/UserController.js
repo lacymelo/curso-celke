@@ -1,5 +1,7 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { promisify } = require('util');
 
 module.exports = {
 
@@ -77,7 +79,7 @@ module.exports = {
     //login do usuário
     async login(req, res){
         
-        const user = await Usuario.findOne({attributes: ['senha'], where: {email: req.body.email}});
+        const user = await Usuario.findOne({where: {email: req.body.email}});
 
         if(user === null){
             return res.status(400).json({message: 'Email não cadastrado!'});
@@ -87,6 +89,33 @@ module.exports = {
             return res.json({message: 'senha inválida'});
         }
 
-        return res.json({message: 'Login realizado com sucesso!'});
+        var token = jwt.sign({id: user.id}, 'eQoPSGwhSV9', {
+            // expiresIn: 600 10min
+            expiresIn: '7d'// 7 dias
+        });
+
+        return res.json({
+            message: 'Login realizado com sucesso!',
+            user: user,
+            token: token
+        });
+    },
+
+    //validação de token
+    async validateToken(req, res, next){
+        const authHeader = req.headers.authorization;
+        const [bearer, token] = authHeader.split(' ');
+
+        if(!token){
+            return res.status(400).json({message: 'Necessário enviar token!'});
+        }
+
+        try{
+            const decoded = await promisify(jwt.verify)(token, 'eQoPSGwhSV9');
+            req.userId = decoded.id;
+            return next();
+        }catch{
+            return res.status(400).json({message: 'token inválido!'});
+        }
     }
 };
