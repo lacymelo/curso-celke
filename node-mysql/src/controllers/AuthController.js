@@ -1,9 +1,10 @@
+const { appendFile } = require('fs');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 require('dotenv').config();
 
 module.exports = {
-    //validação de token
+    //validação de token JWT
     eAdmin: async function validateToken(req, res, next){
         const authHeader = req.headers.authorization;
         const [bearer, token] = authHeader.split(' ');
@@ -20,5 +21,5 @@ module.exports = {
         }catch{
             return res.status(400).json({message: 'token inválido!'});
         }
-    }
+    },
 }

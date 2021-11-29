@@ -31,4 +31,7 @@ Instalar a dependencia para JWT
 Gerenciar variáveis de ambiente
 ### yarn add dotenv
 
+Permite acesso a API
+### yarn add cors
+
 
