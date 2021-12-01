@@ -91,7 +91,7 @@ module.exports = {
 
         var token = jwt.sign({id: user.id}, process.env.SECRET, {
             // expiresIn: 600 10min
-            expiresIn: 1800 // 7 dias
+            expiresIn: 1800 // 30 min
         });
 
         return res.json({
