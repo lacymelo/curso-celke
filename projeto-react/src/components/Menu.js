@@ -1,5 +1,7 @@
 import React, { useState} from "react";
 
+import '../App.css'
+
 function Menu() {
 
     const [ data, setData] = useState({
@@ -23,7 +25,7 @@ function Menu() {
     }
 
     return(
-        <div>
+        <body>
             <h1>Cadastrar</h1>
             <form onSubmit={newUser}>
                 <label>Nome: </label>
@@ -39,7 +41,7 @@ function Menu() {
 
                 <button type="submit">Cadastrar</button>
             </form>
-        </div>
+        </body>
     );
 }
 
