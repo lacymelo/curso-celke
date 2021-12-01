@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
 // import Article from "./components/Article";
 // import Header from "./components/Header";
-// import Menu from "./components/Menu";
+import Menu from "./components/Menu";
 
 
 function App() {
@@ -30,9 +30,9 @@ function App() {
       <p>{date.phone}</p>
       {/* <button onClick={() => setPeople('Laciene')}>Alterar</button> */}
 
-      {/* <Header />
+      {/* <Header /> */}
       <Menu />
-      <Article date={state} /> */}
+      {/* <Article date={state} /> */}
     </div>
   );
 }
