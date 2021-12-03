@@ -81,7 +81,7 @@ module.exports = {
         
         const user = await Usuario.findOne({where: {email: req.body.email}});
 
-        if(user === null){
+        if(!user){
             return res.status(400).json({message: 'Email não cadastrado!'});
         }
 

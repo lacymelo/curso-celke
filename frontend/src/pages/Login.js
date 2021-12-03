@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import api from '../config/api';
 
 function Login(){
 
@@ -13,10 +14,20 @@ function Login(){
         ...data, [e.target.name]: e.target.value
     });
 
-    
+
     const submitForm = e => {
         e.preventDefault();
-        console.log(data);
+
+        api.post('/login', data)
+        .then((response) => {
+            console.log(response);
+        }).catch((err) => {
+            if(err.response){
+                console.log(err.response);
+            } else {
+                console.log('erro: tente mains tarde!');
+            }
+        });
     }
 
     return(
