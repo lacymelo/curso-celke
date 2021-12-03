@@ -1,6 +1,6 @@
 import React, { useState} from "react";
-
-import '../App.css'
+import { Button, Container, Row, Col, Form, FormGroup, FormLabel, FormControl, Card, CardGroup } from 'react-bootstrap';
+import CardHeader from "react-bootstrap/esm/CardHeader";
 
 function Menu() {
 
@@ -25,23 +25,51 @@ function Menu() {
     }
 
     return(
-        <body>
-            <h1>Cadastrar</h1>
-            <form onSubmit={newUser}>
-                <label>Nome: </label>
-                <input type="text" name="nome" placeholder="digite seu nome" onChange={valorInput} />
+        <Container fluid>
+            <Row> 
+                <CardGroup>
+                    <Card>
+                        <CardHeader>Cadastro</CardHeader>
+                        <Form onSubmit={newUser}>
 
-                <input type="file" name="image" onChange={inputFile} />
+                            <FormGroup as={Row} className="mb-3">
+                                <FormLabel column sm="2">
+                                Nome
+                                </FormLabel>
+                                <Col sm="10">
+                                <FormControl type="text" name="nome" placeholder="digite seu nome" onChange={valorInput} />
+                                </Col>
+                            </FormGroup>
 
-                <label>E-mail: </label>
-                <input type="text" name="email" placeholder="digite seu email" onChange={valorInput} />
+                            <FormGroup as={Row} className="mb-3">
+                                <FormLabel column sm="2">
+                                E-mail
+                                </FormLabel>
+                                <Col sm="10">
+                                <FormControl type="email" name="email" placeholder="digite seu email" onChange={valorInput} />
+                                </Col>
+                            </FormGroup>
 
-                <label>Senha: </label>
-                <input type="password" name="senha" placeholder="digite sua senha" onChange={valorInput} />
+                            <Form.Group controlId="formFile" className="mb-3">
+                                <Form.Label>Avatar</Form.Label>
+                                <Form.Control type="file" name="imagem" onChange={inputFile} />
+                            </Form.Group>
 
-                <button type="submit">Cadastrar</button>
-            </form>
-        </body>
+                            <FormGroup as={Row} className="mb-3">
+                                <FormLabel column sm="2">
+                                Password
+                                </FormLabel>
+                                <Col sm="10">
+                                <FormControl type="password" name="senha" placeholder="digite sua senha" onChange={valorInput} />
+                                </Col>
+                            </FormGroup>
+
+                            <Button type="submit" variant="primary">Cadastrar</Button>
+                        </Form>  
+                    </Card>
+                </CardGroup>
+            </Row>
+        </Container>
     );
 }
 
