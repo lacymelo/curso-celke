@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import React, { useState , useContext } from "react";
+
+import { useNavigate } from 'react-router-dom';
+
 import api from '../config/api';
 
+import {Context} from '../context/AuthContext';
+
 function Login(){
+
+    const navigate = useNavigate();
+
+    const authenticated = useContext(Context);
+
+    console.log(authenticated);
 
     //inicializa os campos com vazio
     const [ data, setData ] = useState({
         email: '',
         senha: ''
+    });
+
+    const [status, setStatus] = useState({
+        type: '',
+        message: '',
+        loading: false
     });
 
     //atribui para data  o que foi digitado pelo usuário
@@ -18,12 +35,26 @@ function Login(){
     const submitForm = e => {
         e.preventDefault();
 
+        setStatus({
+            loading: true
+        });
+
         api.post('/login', data)
         .then((response) => {
-            console.log(response);
+            setStatus({
+                // type: 'success',
+                // message: response.data.message,
+                loading: false
+            });
+            localStorage.setItem('token', JSON.stringify(response.data.token));
+            return navigate('/home');
         }).catch((err) => {
             if(err.response){
-                console.log(err.response);
+                setStatus({
+                    type: 'error',
+                    message: err.response.data.message,
+                    loading: false
+                });
             } else {
                 console.log('erro: tente mains tarde!');
             }
@@ -33,6 +64,7 @@ function Login(){
     return(
         <div>
             <h1>Login</h1>
+            {status.type === 'error' ? <p>{status.message}</p> : <p>{status.message}</p>}
             <form onSubmit={submitForm}>
                 <label>Usuário:</label>
                 <input type="text" name="email" placeholder=" entre com seu e-mail" onChange={changeInput} />
@@ -40,7 +72,7 @@ function Login(){
                 <label>Senha:</label>
                 <input type="password" name="senha" placeholder="entre com a senha" onChange={changeInput} />
 
-                <button type="submit">Entrar</button>
+                {status.loading ? <button type="submit" disabled>Acessando ...</button> : <button type="submit">Entrar</button>}
             </form>
         </div>
     );
