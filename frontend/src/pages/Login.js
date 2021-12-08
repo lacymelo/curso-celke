@@ -10,7 +10,7 @@ function Login(){
 
     const navigate = useNavigate();
 
-    const authenticated = useContext(Context);
+    const { authenticated, signIn } = useContext(Context);
 
     console.log(authenticated);
 
@@ -46,7 +46,8 @@ function Login(){
                 // message: response.data.message,
                 loading: false
             });
-            localStorage.setItem('token', JSON.stringify(response.data.token));
+            localStorage.setItem('token', response.data.token);
+            signIn(true);
             return navigate('/home');
         }).catch((err) => {
             if(err.response){
@@ -56,7 +57,7 @@ function Login(){
                     loading: false
                 });
             } else {
-                console.log('erro: tente mains tarde!');
+                console.log('erro: tente mais tarde!');
             }
         });
     }

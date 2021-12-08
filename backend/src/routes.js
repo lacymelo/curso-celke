@@ -8,9 +8,9 @@ const routes = new express.Router();
 //validar token
 routes.get('/valToken', eAdmin, eUserToken);
 //lista usuários
-routes.get('/users', UserController.listUser);
+routes.get('/users', eAdmin, UserController.listUser);
 //cadastra novo usuário
-routes.post('/new', UserController.createUser);
+routes.post('/new', eAdmin, UserController.createUser);
 //mostra usuário específico
 routes.get('/user/:id', eAdmin, UserController.showUser);
 //atualiza registro de usuário

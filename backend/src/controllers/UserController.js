@@ -12,7 +12,11 @@ module.exports = {
             attributes: ['id', 'nome', 'email', 'senha']
         });
 
-        return res.json(users);
+        if(users){
+            return res.json(users);
+        }else{
+            return res.json({error: true, message: 'Error'});
+        }
     },
 
     //mostra um usuário específico
@@ -32,9 +36,9 @@ module.exports = {
         data.senha = await bcrypt.hash(data.senha, 8);
 
         await Usuario.create(data).then(() => {
-            return res.json({message: 'Success'});
+            return res.json({error: false, message: 'Success'});
         }).catch(() => {
-            return res.json({message: 'Error'});
+            return res.json({error: true, message: 'Error'});
         });
     },
 
