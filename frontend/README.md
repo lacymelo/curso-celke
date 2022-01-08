@@ -20,3 +20,6 @@ Gerenciar as Rotas
 Realizar chamada para API
 
 ### yarn add axios
+
+Para validar campos do formulário
+### yarn add yup

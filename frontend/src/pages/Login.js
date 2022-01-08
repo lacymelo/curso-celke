@@ -1,9 +1,7 @@
 import React, { useState , useContext } from "react";
-
 import { useNavigate } from 'react-router-dom';
 
 import api from '../config/api';
-
 import {Context} from '../context/AuthContext';
 
 function Login(){
@@ -11,8 +9,6 @@ function Login(){
     const navigate = useNavigate();
 
     const { authenticated, signIn } = useContext(Context);
-
-    console.log(authenticated);
 
     //inicializa os campos com vazio
     const [ data, setData ] = useState({
@@ -42,8 +38,8 @@ function Login(){
         api.post('/login', data)
         .then((response) => {
             setStatus({
-                // type: 'success',
-                // message: response.data.message,
+                type: 'success',
+                message: response.data.message,
                 loading: false
             });
             localStorage.setItem('token', response.data.token);

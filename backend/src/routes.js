@@ -8,7 +8,7 @@ const routes = new express.Router();
 //validar token
 routes.get('/valToken', eAdmin, eUserToken);
 //lista usuários
-routes.get('/users', eAdmin, UserController.listUser);
+routes.get('/users/:page', eAdmin, UserController.listUser);
 //cadastra novo usuário
 routes.post('/new', eAdmin, UserController.createUser);
 //mostra usuário específico
@@ -18,8 +18,10 @@ routes.put('/user', eAdmin, UserController.updateUser);
 //apaga um usuário da base de dados
 routes.get('/deleteUser/:id', UserController.deleteUser);
 //redefine senha
-routes.put('/redefinePassword', UserController.redefinePassword);
+routes.put('/redefinePassword', eAdmin, UserController.redefinePassword);
 //login de usuário
 routes.post('/login', UserController.login);
+//visualizar perfil do usuário logado
+routes.get('/viewProfile', eAdmin, UserController.viewProfile);
 
 module.exports = routes;

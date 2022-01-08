@@ -34,4 +34,6 @@ Gerenciar variáveis de ambiente
 Permite acesso a API
 ### yarn add cors
 
+para validação de campos
+### yarn add yup
 

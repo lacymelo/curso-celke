@@ -1,29 +1,20 @@
-import React, { useState }  from "react";
-import { useNavigate } from "react-router-dom";
-import * as yup from 'yup';
+import React, { useState}  from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import api from '../config/api';
-
+import * as yup from 'yup';
 import Menu from "../components/Menu";
 
-export default function New(){
+export default function RedefinePassword(){
+
+    const { id } = useParams();
+    const [senha, setSenha] = useState(''); 
 
     const navigate = useNavigate();
-    
-    const [data, setData] = useState({
-        nome: '',
-        email: '',
-        senha: '',
-    });
-
 
     const [status, setStatus] = useState({
         type: '',
-        message: ''
-    });
-
-    const handleInput = e => setData({
-        ...data, [e.target.name]: e.target.value
+        message: '',
     });
 
     async function handleSubmit(event){
@@ -37,7 +28,10 @@ export default function New(){
             }
         }
 
-        await api.post('/new', data, headers)
+        await api.put('/redefinePassword', {
+            id,
+            senha
+        }, headers)
         .then((response) => {
             return navigate('/users', {
                 state: {
@@ -63,13 +57,13 @@ export default function New(){
 
     async function validate(){
         let schema = yup.object().shape({
-            nome: yup.string().required('Error: Campo nome obrigatório!'),
-            email: yup.string().required('Error: Campo email obrigatório!'),
             senha: yup.string("Error: Campo senha obrigatório!").required('Error: Campo senha obrigatório!')
         });
 
         try{
-            await schema.validate(data);
+            await schema.validate({
+                senha
+            });
 
             return true;
         }catch (err){
@@ -84,22 +78,15 @@ export default function New(){
     return(
         <>
             <Menu/>
-
-            <h1>Novo Usuário</h1>
+            <h1>Redefinir Senha</h1>
 
             {status.type === 'error' ? <p>{status.message}</p> : ''}
 
             <form onSubmit={handleSubmit}>
-                <label htmlFor="nome">Nome* </label>
-                <input type="text" name="nome" id="nome" onChange={handleInput} /><br/>
-
-                <label htmlFor="email">Email* </label>
-                <input type="text" name="email" id="email" onChange={handleInput} /><br/>
 
                 <label htmlFor="senha">Senha* </label>
-                <input type="password" name="senha" id="senha" onChange={handleInput} /><br/>
-
-                <button type="submit">Cadastrar</button>
+                <input type="password" name="senha" id="senha" placeholder="******" onChange={(e) => setSenha(e.target.value)} /><br/>
+                <button type="submit">Salvar</button>
             </form>
         </>
 
